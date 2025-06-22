@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tic_tac_toa/models/game_model.dart';
 import 'package:tic_tac_toa/utils/ai_engine.dart';
@@ -132,25 +133,48 @@ class GameController extends GetxController {
   void _showGameOverDialog() {
     String title;
     String message;
+    String iconPath;
 
     if (game.value.gameState == GameState.won) {
       if (game.value.gameMode == GameMode.singlePlayer) {
-        title = game.value.winner == Player.x ? '🎉 You Won!' : '🤖 AI Won!';
-        message = game.value.winner == Player.x
-            ? 'Congratulations!'
-            : 'Better luck next time!';
+        if (game.value.winner == Player.x) {
+          title = 'You Won!';
+          message = 'Congratulations!';
+          iconPath = 'assets/images/win.svg';
+        } else {
+          title = 'AI Won!';
+          message = 'Better luck next time!';
+          iconPath = 'assets/images/ai_robot.svg';
+        }
       } else {
-        title = '🎉 Player ${game.value.winner == Player.x ? 'X' : 'O'} Won!';
+        title = 'Player ${game.value.winner == Player.x ? 'X' : 'O'} Won!';
         message = 'Congratulations to the winner!';
+        iconPath = 'assets/images/win.svg';
       }
     } else {
-      title = '🤝 It\'s a Draw!';
+      title = 'It\'s a Draw!';
       message = 'Good game!';
+      iconPath = 'assets/images/draw.svg';
     }
 
     Get.dialog(
       AlertDialog(
-        title: Text(title, textAlign: TextAlign.center),
+        title: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: SvgPicture.asset(
+                iconPath,
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(title, textAlign: TextAlign.center),
+          ],
+        ),
         content: Text(message, textAlign: TextAlign.center),
         actions: [
           TextButton(
