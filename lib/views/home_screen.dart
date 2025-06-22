@@ -56,7 +56,7 @@ class HomeScreen extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: () => _startGame(GameMode.singlePlayer),
                   icon: const Icon(Icons.smart_toy),
-                  label: const Text('Play vs AI'),
+                  label: const Text('Player vs AI'),
                 ),
               ),
               const SizedBox(height: 16),
